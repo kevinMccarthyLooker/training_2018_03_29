@@ -17,12 +17,17 @@ view: users {
 
   dimension: first_name {
     type: string
-    sql: ${TABLE}.first_name;;
+    sql: left(${TABLE}.first_name,1);;
   }
 
   dimension: last_name {
     type: string
     sql: ${TABLE}.last_name ;;
+  }
+
+  dimension: full_name {
+    type: string
+    sql: concat(${first_name},${last_name}) ;;
   }
 
   dimension: email {
@@ -38,6 +43,15 @@ view: users {
   dimension: age {
     type: number
     sql: ${TABLE}.age ;;
+    value_format_name: decimal_1
+
+  }
+
+  dimension: age_tier {
+    type: tier
+    tiers: [10,20,30,40,50,60,70]
+    sql: ${age} ;;
+    style: integer
   }
 
   dimension: gender {
@@ -77,6 +91,7 @@ view: users {
   dimension: zip {
     type: zipcode
     sql: ${TABLE}.zip ;;
+#     map_layer_name: us_zipcode_tabulation_areas
   }
 
   dimension: latitude {
@@ -88,6 +103,12 @@ view: users {
     type: number
     sql: ${TABLE}.longitude ;;
   }
+
+  dimension: is_organic {
+    type: yesno
+    sql: ${traffic_source}='Organic' ;;
+  }
+
 
 ######################
 ##### Other Info #####
@@ -103,6 +124,15 @@ view: users {
 # To do: Create Domestic User Count
   measure: count {
     type: count
+    drill_fields: [id, first_name, last_name, events.count, order_items.count]
+  }
+
+  measure:  organic_user_count{
+    type: count
+    filters: {
+      field: is_organic
+      value: "Yes"
+    }
     drill_fields: [id, first_name, last_name, events.count, order_items.count]
   }
 
