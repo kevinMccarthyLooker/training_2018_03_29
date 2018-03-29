@@ -7,6 +7,11 @@ view: inventory_items {
     sql: ${TABLE}.id ;;
   }
 
+  dimension: product_distribution_center_id {
+    type: number
+    sql: ${TABLE}.product_distribution_center_id ;;
+  }
+
   dimension: cost {
     type: number
     sql: ${TABLE}.cost ;;
@@ -14,42 +19,26 @@ view: inventory_items {
 
   dimension_group: created {
     type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
+    timeframes: [raw,date,month,year]
     sql: ${TABLE}.created_at ;;
   }
 
   dimension: product_brand {
+    label: "Brand"
     type: string
     sql: ${TABLE}.product_brand ;;
   }
 
   dimension: product_category {
+    label: "Category"
     type: string
     sql: ${TABLE}.product_category ;;
   }
 
   dimension: product_department {
+    label: "Department"
     type: string
     sql: ${TABLE}.product_department ;;
-  }
-
-  dimension: product_distribution_center_id {
-    type: number
-    sql: ${TABLE}.product_distribution_center_id ;;
-  }
-
-  dimension: product_id {
-    type: number
-    # hidden: yes
-    sql: ${TABLE}.product_id ;;
   }
 
   dimension: product_name {
@@ -58,6 +47,7 @@ view: inventory_items {
   }
 
   dimension: product_retail_price {
+    label: "Retail Price"
     type: number
     sql: ${TABLE}.product_retail_price ;;
   }
@@ -69,15 +59,7 @@ view: inventory_items {
 
   dimension_group: sold {
     type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
+    timeframes: [raw,date,month,year]
     sql: ${TABLE}.sold_at ;;
   }
 

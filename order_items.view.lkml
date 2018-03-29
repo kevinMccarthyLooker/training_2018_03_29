@@ -7,37 +7,15 @@ view: order_items {
     sql: ${TABLE}.id ;;
   }
 
-  dimension_group: created {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}.created_at ;;
-  }
-
-  dimension_group: delivered {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}.delivered_at ;;
+##### Foreign Keys #####
+  dimension: user_id {
+    type: number
+#   hidden: yes
+    sql: ${TABLE}.user_id ;;
   }
 
   dimension: inventory_item_id {
     type: number
-    # hidden: yes
     sql: ${TABLE}.inventory_item_id ;;
   }
 
@@ -46,37 +24,18 @@ view: order_items {
     sql: ${TABLE}.order_id ;;
   }
 
+  dimension_group: created {
+    group_label: "Date Created"
+    type: time
+    timeframes: [raw,date,month,year]
+    sql: ${TABLE}.created_at ;;
+  }
+
   dimension_group: returned {
+    group_label: "Date Returned"
     type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
+    timeframes: [raw,date,month,year]
     sql: ${TABLE}.returned_at ;;
-  }
-
-  dimension: sale_price {
-    type: number
-    sql: ${TABLE}.sale_price ;;
-  }
-
-  dimension_group: shipped {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}.shipped_at ;;
   }
 
   dimension: status {
@@ -84,10 +43,9 @@ view: order_items {
     sql: ${TABLE}.status ;;
   }
 
-  dimension: user_id {
+  dimension: sale_price {
     type: number
-    # hidden: yes
-    sql: ${TABLE}.user_id ;;
+    sql: ${TABLE}.sale_price ;;
   }
 
   measure: count {
@@ -95,15 +53,12 @@ view: order_items {
     drill_fields: [detail*]
   }
 
+
   # ----- Sets of fields for drilling ------
   set: detail {
-    fields: [
-      id,
-      users.id,
-      users.first_name,
-      users.last_name,
-      inventory_items.id,
-      inventory_items.product_name
-    ]
+    fields: [id, users.id, inventory_items.id, users.first_name, users.last_name, inventory_items.product_name]
   }
+
+# Exercise: Create 'complete' yesNo field off of status and then total_complete_sale_price
+
 }
