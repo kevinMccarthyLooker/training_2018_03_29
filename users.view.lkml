@@ -35,6 +35,26 @@ view: users {
     sql: ${TABLE}.email ;;
   }
 
+  filter: emails_to_compare {
+    type: string
+    suggest_dimension: users.email
+    suggest_explore: order_items
+  }
+
+
+  dimension: user_comparison_group {
+    type: string
+    sql:
+
+    CASE
+      WHEN {% condition emails_to_compare %} ${email} {% endcondition %} THEN 'Comparison Group'
+      ELSE 'Rest of population'
+    END
+    ;;
+  }
+
+
+
 ############################
 ##### Demographic Info #####
 #To do: Create years_as_consumer

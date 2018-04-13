@@ -8,6 +8,7 @@ view: user_summary {
       WHERE
         1=1
         AND {% condition special_time_horizon %} order_items.created_at {% endcondition %}
+
       GROUP BY 1
        ;;
   }
