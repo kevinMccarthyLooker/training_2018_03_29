@@ -5,7 +5,7 @@ include: "*.view" # include all the views
 include: "*.dashboard" # include all the dashboards
 
 datagroup: training_default_datagroup {
-  # sql_trigger: SELECT MAX(id) FROM etl_log;;
+  sql_trigger: SELECT MAX(id) FROM etl_log;;
   max_cache_age: "1 hour"
 }
 
@@ -17,6 +17,7 @@ explore: order_items {
   label: "things I ordered"
   #To Do: Add distribution_centers join to this explore
   description: "Information about orders including user information"
+
   join: users {
     type: left_outer
     sql_on: ${order_items.user_id} = ${users.id} ;;
